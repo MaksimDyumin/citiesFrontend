@@ -5,7 +5,7 @@
         <span class="tree-node" :class="{ 'changeable-value': node.type === 'Житель' }" @click="changeTreeNode(node)"
           @mouseover="debouncedShowTooltip(node)" @mouseleave="hideTooltip">
           {{ node.label }}
-          <span v-if="tooltipNode === node && (node.citydata || node.type === 'Житель')" class="tooltip">
+          <span v-if="tooltipNode === node && (node.type === 'Житель')" class="tooltip">
             {{ node.data.citydata }}
           </span>
         </span>
@@ -30,7 +30,6 @@ const debouncedShowTooltip = debounce(showTooltip, 200);
 
 onMounted(async () => {
   await citiesStore.getCities();
-
 });
 
 function debounce(func, delay) {
@@ -49,17 +48,14 @@ function changeTreeNode(node) {
 function showTooltip(node) {
   if (node.citydata || node.type === 'Житель') {
     tooltipNode.value = node;
-    console.log(tooltipTimer)
-    clearInterval(tooltipTimer)
   }
 }
 
 function hideTooltip() {
-  tooltipNode.value = null;
-  if (tooltipTimer) return
-  tooltipTimer = setInterval(() => {
-    hideTooltip()
-  }, 1000);
+  setTimeout(() => {
+    tooltipNode.value = null
+  }, 200)
+
 }
 </script>
 
