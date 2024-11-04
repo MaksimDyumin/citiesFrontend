@@ -49,12 +49,14 @@ function changeTreeNode(node) {
 function showTooltip(node) {
   if (node.citydata || node.type === 'Житель') {
     tooltipNode.value = node;
+    console.log(tooltipTimer)
     clearInterval(tooltipTimer)
   }
 }
 
 function hideTooltip() {
   tooltipNode.value = null;
+  if (tooltipTimer) return
   tooltipTimer = setInterval(() => {
     hideTooltip()
   }, 1000);
