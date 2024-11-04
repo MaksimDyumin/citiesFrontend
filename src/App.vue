@@ -25,13 +25,12 @@ import ActionModal from './components/modals/ActionModal.vue';
 const citiesStore = useCitiesStore();
 const modalStore = useModalStore();
 const tooltipNode = ref(null);
+let tooltipTimer = null
 const debouncedShowTooltip = debounce(showTooltip, 200);
 
 onMounted(async () => {
   await citiesStore.getCities();
-  setInterval(() => {
-    hideTooltip()
-  }, 1000);
+
 });
 
 function debounce(func, delay) {
@@ -50,11 +49,15 @@ function changeTreeNode(node) {
 function showTooltip(node) {
   if (node.citydata || node.type === 'Житель') {
     tooltipNode.value = node;
+    clearInterval(tooltipTimer)
   }
 }
 
 function hideTooltip() {
   tooltipNode.value = null;
+  tooltipTimer = setInterval(() => {
+    hideTooltip()
+  }, 1000);
 }
 </script>
 
