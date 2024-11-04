@@ -6,12 +6,12 @@
           @mouseover="debouncedShowTooltip(node)" @mouseleave="hideTooltip">
           {{ node.label }}
           <span v-if="tooltipNode === node && (node.citydata || node.type === 'Житель')" class="tooltip">
-            {{ node.citydata || 'Житель' }}
+            {{ node.data.citydata }}
           </span>
         </span>
       </template>
     </BaseTree>
-    <ActionModal />
+    <ActionModal v-if="modalStore.isModalShow" />
   </div>
 </template>
 
