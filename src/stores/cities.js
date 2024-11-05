@@ -21,139 +21,56 @@ export const useCitiesStore = defineStore('cities', {
             countryname,
           } = resident
 
-          if (countryname) {
-            const countryNode = (tree[countryname] = tree[countryname] || {
-              label: countryname,
-              type: 'Страна',
-              children: [],
-            })
+          const countryNode = getOrCreateNode(tree, countryname, 'Страна')
 
-            const cityNode = (countryNode.children = countryNode.children || [])
-            let cityEntry = cityNode.find(city => city.label === cityname)
-            if (!cityEntry) {
-              cityEntry = {
-                label: cityname,
-                type: 'Город',
-                children: [],
-              }
-              cityNode.push(cityEntry)
-            }
+          const cityNode = getOrCreateChildNode(countryNode, cityname, 'Город')
 
-            const districtNode = (cityEntry.children = cityEntry.children || [])
-            let districtEntry = districtNode.find(
-              district => district.label === districtname,
-            )
-            if (!districtEntry) {
-              districtEntry = {
-                label: districtname,
-                type: 'Район',
-                children: [],
-              }
-              districtNode.push(districtEntry)
-            }
+          const districtNode = getOrCreateChildNode(
+            cityNode,
+            districtname,
+            'Район',
+          )
 
-            const streetNode = (districtEntry.children =
-              districtEntry.children || [])
-            let streetEntry = streetNode.find(
-              street => street.label === streetname,
-            )
-            if (!streetEntry) {
-              streetEntry = {
-                label: streetname,
-                type: 'Улица',
-                children: [],
-              }
-              streetNode.push(streetEntry)
-            }
+          const streetNode = getOrCreateChildNode(
+            districtNode,
+            streetname,
+            'Улица',
+          )
 
-            let homeNode
-            if (home) {
-              const homeList = (streetEntry.children =
-                streetEntry.children || [])
-              let homeEntry = homeList.find(h => h.label === `Дом ${home}`)
-              if (!homeEntry) {
-                homeEntry = {
-                  label: `Дом ${home}`,
-                  type: 'Дом',
-                  children: [],
-                }
-                homeList.push(homeEntry)
-              }
-              homeNode = homeEntry
-            } else {
-              homeNode = streetEntry
-            }
+          const homeNode = home
+            ? getOrCreateChildNode(streetNode, `Дом ${home}`, 'Дом')
+            : streetNode
 
-            const residentsList = homeNode.children || (homeNode.children = [])
-            residentsList.push({
-              label: personname || 'Неуказанно',
-              data: resident,
-              type: 'Житель',
-              parent: homeNode,
-            })
-          } else {
-            const cityNode = (tree[cityname] = tree[cityname] || {
-              label: cityname,
-              type: 'Город',
-              children: [],
-            })
-
-            const districtNode = (cityNode.children = cityNode.children || [])
-            let districtEntry = districtNode.find(
-              district => district.label === districtname,
-            )
-            if (!districtEntry) {
-              districtEntry = {
-                label: districtname,
-                type: 'Район',
-                children: [],
-              }
-              districtNode.push(districtEntry)
-            }
-
-            const streetNode = (districtEntry.children =
-              districtEntry.children || [])
-            let streetEntry = streetNode.find(
-              street => street.label === streetname,
-            )
-            if (!streetEntry) {
-              streetEntry = {
-                label: streetname,
-                type: 'Улица',
-                children: [],
-              }
-              streetNode.push(streetEntry)
-            }
-
-            let homeNode
-            if (home) {
-              const homeList = (streetEntry.children =
-                streetEntry.children || [])
-              let homeEntry = homeList.find(h => h.label === `Дом ${home}`)
-              if (!homeEntry) {
-                homeEntry = {
-                  label: `Дом ${home}`,
-                  type: 'Дом',
-                  children: [],
-                }
-                homeList.push(homeEntry)
-              }
-              homeNode = homeEntry
-            } else {
-              homeNode = streetEntry
-            }
-
-            const residentsList = homeNode.children || (homeNode.children = [])
-            residentsList.push({
-              label: personname || 'Неуказанно',
-              data: resident,
-              type: 'Житель',
-              parent: homeNode,
-            })
-          }
+          addResident(homeNode, personname, resident)
         })
 
         return Object.values(tree)
+      }
+
+      const getOrCreateNode = (tree, label, type) => {
+        if (!tree[label]) {
+          tree[label] = { label, type, children: [] }
+        }
+        return tree[label]
+      }
+
+      const getOrCreateChildNode = (parent, label, type) => {
+        const node = parent.children.find(n => n.label === label)
+        if (node) {
+          return node
+        }
+        const newNode = { label, type, children: [] }
+        parent.children.push(newNode)
+        return newNode
+      }
+
+      const addResident = (node, label, data) => {
+        node.children.push({
+          label: label || 'Неуказанно',
+          data,
+          type: 'Житель',
+          parent: node,
+        })
       }
 
       return buildTree(state.cities)
