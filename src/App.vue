@@ -55,7 +55,6 @@ function hideTooltip() {
   setTimeout(() => {
     tooltipNode.value = null
   }, 200)
-
 }
 </script>
 
