@@ -81,7 +81,7 @@ export const useCitiesStore = defineStore('cities', {
     async getCities() {
       try {
         const response = await publicClient.get('peoples/')
-        this.cities = response.data
+        this.citizens = response.data
       } catch (error) {
         console.error(error)
       }
