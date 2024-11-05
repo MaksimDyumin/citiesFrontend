@@ -30,7 +30,7 @@ const debouncedShowTooltip = debounce(showTooltip, 200);
 onMounted(async () => {
   const storedCities = localStorage.getItem('cities');
   if (storedCities) {
-    citiesStore.cities = JSON.parse(storedCities)
+    citiesStore.citizens = JSON.parse(storedCities)
   } else {
     await citiesStore.getCities();
   }

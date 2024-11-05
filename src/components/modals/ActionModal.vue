@@ -69,7 +69,7 @@ function confirmChanges() {
     modalStore.modalData.data.cityname = editableData.value.cityname;
     modalStore.modalData.data.countryname = editableData.value.countryname;
   }
-  localStorage.setItem('cities', JSON.stringify(citiesStore.cities));
+  localStorage.setItem('cities', JSON.stringify(citiesStore.citizens));
   modalStore.hideModal()
 }
 </script>

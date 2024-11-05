@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useCitiesStore = defineStore('cities', {
   state: () => ({
-    cities: [],
+    citizens: [],
   }),
 
   getters: {
@@ -73,7 +73,7 @@ export const useCitiesStore = defineStore('cities', {
         })
       }
 
-      return buildTree(state.cities)
+      return buildTree(state.citizens)
     },
   },
 
