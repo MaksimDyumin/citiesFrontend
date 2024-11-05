@@ -36,9 +36,11 @@
 import { ref, onMounted } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import ModalWrapper from '@/components/ModalWrapper.vue';
+import { useCitiesStore } from '@/stores/cities';
 
 
 const modalStore = useModalStore();
+const citiesStore = useCitiesStore()
 const editableData = ref({
   streetname: '',
   home: '',
@@ -67,6 +69,7 @@ function confirmChanges() {
     modalStore.modalData.data.cityname = editableData.value.cityname;
     modalStore.modalData.data.countryname = editableData.value.countryname;
   }
+  localStorage.setItem('cities', JSON.stringify(citiesStore.cities));
   modalStore.hideModal()
 }
 </script>
@@ -77,8 +80,6 @@ function confirmChanges() {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-  .modal-header {}
 }
 
 .form-field {

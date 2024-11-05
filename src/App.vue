@@ -25,11 +25,15 @@ import ActionModal from './components/modals/ActionModal.vue';
 const citiesStore = useCitiesStore();
 const modalStore = useModalStore();
 const tooltipNode = ref(null);
-let tooltipTimer = null
 const debouncedShowTooltip = debounce(showTooltip, 200);
 
 onMounted(async () => {
-  await citiesStore.getCities();
+  const storedCities = localStorage.getItem('cities');
+  if (storedCities) {
+    citiesStore.cities = JSON.parse(storedCities)
+  } else {
+    await citiesStore.getCities();
+  }
 });
 
 function debounce(func, delay) {
