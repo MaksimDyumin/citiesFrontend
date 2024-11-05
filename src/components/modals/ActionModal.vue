@@ -3,6 +3,10 @@
     <div class="action-container">
       <form @submit.prevent="confirmChanges">
         <div class="form-field">
+          <label>Имя жителя</label>
+          <input type="text" placeholder="Имя жителя" disabled :value="modalStore.modalData.data.personname" />
+        </div>
+        <div class="form-field">
           <label>Улица</label>
           <input v-model="editableData.streetname" type="text" placeholder="Название улицы" />
         </div>
@@ -73,6 +77,8 @@ function confirmChanges() {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .modal-header {}
 }
 
 .form-field {
